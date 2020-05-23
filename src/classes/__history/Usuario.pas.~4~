@@ -1,0 +1,278 @@
+unit Usuario;
+
+interface
+
+uses
+  Controls, ExtCtrls, SysUtils, Variants, Data.DB;
+
+
+type
+  TUsuario = class
+  private
+    FIdUsuario: string;
+    procedure LimparVariaveis;
+    procedure ExecConsulta(p_Where: String);
+  public
+    constructor Create;
+    procedure Consultar;
+    procedure ConsultarLogin;
+    procedure ConsultarPorSenha;
+    procedure Incluir;
+    procedure Alterar;
+
+    class function GetUsuarios: TDataSet;
+    class function getDescricaoPerfil(pIdPerfil: string): string;
+    class function Login(pLoginUsuario, pSenha: String): TDataSet;
+
+    property IdUsuario: string read FIdUsuario write FIdUsuario;
+
+  end;
+
+implementation
+
+uses uRotinasDB, uRotinaSis;
+
+constructor TUsuario.Create;
+begin
+  LimparVariaveis;
+end;
+
+procedure TUsuario.LimparVariaveis;
+begin
+  VCodUsuario := '';
+  VNomeUsuario := '';
+  VLoginUsuario := '';
+  VSenhaUsuario := '';
+  VAtivo := '';
+  VDtCadastro := NULL;
+  VId_Perfil := '';
+end;
+
+class function TUsuario.Login(pLoginUsuario, pSenha: String): TDataSet;
+var
+  wl_Sql: String;
+begin
+  wl_Sql := 'SELECT ' + '  CodUsuario idUsuario, ' +
+    '  LoginUsuario loginUsuario, ' + '  Ativo ativo, ' +
+    '  ID_PERFIL idPerfil, ' + '  CONVERT(char, DtCadastro, 103) dtCadastro, ' +
+    '  ADMIN_APP adminApp '+
+    'FROM Usuario ' + ' WHERE LoginUsuario = ' +
+    QuotedStr(UpperCase(pLoginUsuario)) + ' AND SenhaUsuario = ' +
+    QuotedStr(pSenha);
+  Result := RetornaDadosCDS(wl_Sql);
+
+end;
+
+procedure TUsuario.Consultar;
+begin
+  Self.ExecConsulta('CodUsuario = ' + VCodUsuario +
+    ' and Coalesce(CodUsuario,1) > 0');
+end;
+
+procedure TUsuario.ConsultarLogin;
+begin
+  Self.ExecConsulta('LoginUsuario = ' + QuotedStr(VLoginUsuario));
+end;
+
+procedure TUsuario.ConsultarPorSenha;
+begin
+  Self.ExecConsulta('SenhaUsuario = ' + QuotedStr(VSenhaUsuario));
+end;
+
+procedure TUsuario.Incluir;
+var
+  SqlText: String;
+begin
+  SqlText :=
+    'Insert into Usuario(NomeUsuario, LoginUsuario, SenhaUsuario, Ativo, ' +
+    ' Id_Perfil, ADMIN_APP ) Values (';
+
+  if (VNomeUsuario <> '') then
+    SqlText := SqlText + QuotedStr(VNomeUsuario)
+  else
+    SqlText := SqlText + 'Null';
+  SqlText := SqlText + ',';
+
+  if (VLoginUsuario <> '') then
+    SqlText := SqlText + QuotedStr(VLoginUsuario)
+  else
+    SqlText := SqlText + 'Null';
+  SqlText := SqlText + ',';
+
+  if (VSenhaUsuario <> '') then
+    SqlText := SqlText + QuotedStr(VSenhaUsuario)
+  else
+    SqlText := SqlText + 'Null';
+  SqlText := SqlText + ',';
+
+  if (VAtivo <> '') then
+    SqlText := SqlText + VAtivo
+  else
+    SqlText := SqlText + '1';
+  {
+    SqlText := SqlText + ',';
+    if (VDtCadastro <> NULL) then
+    SqlText := SqlText + TransfData(VarToDateTime(VDtCadastro))
+    else SqlText := SqlText + 'Null';
+  }
+
+  SqlText := SqlText + ',';
+  if (VId_Perfil <> NULL) then
+    SqlText := SqlText + VId_Perfil
+  else
+    SqlText := SqlText + 'Null';
+
+  SqlText := SqlText + ',';
+  if (VAdminApp <> '' ) then
+    SqlText := SqlText + VAdminApp
+  else SqlText := SqlText + '0';
+
+  SqlText := SqlText + ')';
+  ExecutaComando(SqlText);
+end;
+
+procedure TUsuario.Alterar;
+var
+  SqlText: String;
+begin
+  SqlText := 'Update Usuario set ';
+
+  if (VNomeUsuario <> '') then
+    SqlText := SqlText + 'NomeUsuario = ' + QuotedStr(VNomeUsuario)
+  else
+    SqlText := SqlText + 'NomeUsuario = Null';
+
+  SqlText := SqlText + ',';
+
+  if (VLoginUsuario <> '') then
+    SqlText := SqlText + 'LoginUsuario = ' + QuotedStr(VLoginUsuario)
+  else
+    SqlText := SqlText + 'LoginUsuario = Null';
+
+  SqlText := SqlText + ',';
+  {
+    if (VSenhaUsuario <> '') then
+    SqlText := SqlText + 'SenhaUsuario = ' + QuotedStr(VSenhaUsuario)
+    else
+    SqlText := SqlText + 'SenhaUsuario = Null';
+
+    SqlText := SqlText + ',';
+
+    if (VAtivo <> '' ) then
+    SqlText := SqlText + 'Ativo ='+ VAtivo
+    else
+    SqlText := SqlText + 'Ativo = Null';
+
+    SqlText := SqlText + ',';
+  }
+
+  if (VId_Perfil <> '') then
+    SqlText := SqlText + 'Id_perfil =' + VId_Perfil
+  else
+    SqlText := SqlText + 'Id_Perfil = Null';
+  {
+    SqlText := SqlText + ',';
+
+    if (VDtCadastro <> NULL) then
+    SqlText := SqlText + 'DtCadastro=' + TransfData(VarToDateTime(VDtCadastro))
+    else
+    SqlText := SqlText + 'DtCadastro = Null';
+  }
+   SqlText := SqlText + ',';
+  if (VAdminApp <> '' ) then
+    SqlText := SqlText + 'ADMIN_APP = '+VAdminApp
+  else SqlText := SqlText + 'ADMIN_APP = 0';
+
+  SqlText := SqlText + ' where CodUsuario' + ' = ' + VCodUsuario;
+
+  ExecutaComando(SqlText);
+end;
+
+procedure TUsuario.ExecConsulta(p_Where: String);
+var
+  wl_Sql: String;
+begin
+  wl_Sql := 'Select CodUsuario, NomeUsuario, LoginUsuario, SenhaUsuario, Ativo,'
+    + '       CONVERT(CHAR,DtCadastro,103 ) DtCadastro, ID_PERFIL, ADMIN_APP' +
+    '  from Usuario' + ' where ' + p_Where;
+  With RetornaDadosCDS(wl_Sql) do
+  begin
+    try
+      if not Isempty then
+      begin;
+        if FieldByName('CodUsuario').Isnull then
+          VCodUsuario := ''
+        else
+          VCodUsuario := FieldByName('CodUsuario').AsString;
+
+        if FieldByName('NomeUsuario').AsString = '' then
+          VNomeUsuario := ''
+        else
+          VNomeUsuario := FieldByName('NomeUsuario').AsString;
+
+        if FieldByName('LoginUsuario').AsString = '' then
+          VLoginUsuario := ''
+        else
+          VLoginUsuario := FieldByName('LoginUsuario').AsString;
+
+        if FieldByName('SenhaUsuario').AsString = '' then
+          VSenhaUsuario := ''
+        else
+          VSenhaUsuario := FieldByName('SenhaUsuario').AsString;
+
+        if FieldByName('Ativo').Isnull then
+          VAtivo := ''
+        else
+          VAtivo := FieldByName('Ativo').AsString;
+
+        if FieldByName('ID_PERFIL').Isnull then
+          VId_Perfil := ''
+        else
+          VId_Perfil := FieldByName('ID_PERFIL').AsString;
+
+        if FieldByName('DtCadastro').Isnull then
+          VDtCadastro := NULL
+        else
+          VDtCadastro := FieldByName('DtCadastro').asDateTime;
+
+        if FieldByName('ADMIN_APP').Isnull then
+          VAdminApp :=  ''
+        else VAdminApp := FieldByName('ADMIN_APP').AsString;
+      end
+      else
+        LimparVariaveis;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+class function TUsuario.getDescricaoPerfil(pIdPerfil: string): string;
+begin
+  Result := '';
+  if pIdPerfil = CS_PERFIL_ADMIN then
+    Result := 'Administrador'
+  else if pIdPerfil = CS_PERFIL_ANALISTA then
+    Result := 'Analista'
+  else if pIdPerfil = CS_PERFIL_DESENV then
+    Result := 'Desenvolvedor'
+  else if pIdPerfil = CS_PERFIL_TESTADOR then
+    Result := 'Testador'
+  else if pIdPerfil = CS_PERFIL_TREINAMENTO then
+    Result := 'Treinamento'
+  else if pIdPerfil = CS_PERFIL_SUPORTE then
+    Result := 'Suporte'
+
+end;
+
+class function TUsuario.GetUsuarios: TDataSet;
+var
+  wl_Sql: String;
+begin
+  wl_Sql := 'SELECT ' + '  CodUsuario, ' + '  NomeUsuario, ' +
+    '  LoginUsuario, ' + '  Ativo, ' +
+    '  CONVERT(char, DtCadastro, 103) DtCadastro ' + 'FROM Usuario ';
+  Result := RetornaDadosCDS(wl_Sql);
+end;
+
+end.

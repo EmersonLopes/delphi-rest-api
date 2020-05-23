@@ -1,0 +1,33 @@
+unit uServiceUsuario;
+
+interface
+
+uses System.SysUtils, System.Classes, Datasnap.DSServer, Datasnap.DSAuth;
+
+type
+{$METHODINFO ON}
+  TServiceUsuario = class(TComponent)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    function getUsuarios(Value: string): string;
+    function ReverseString(Value: string): string;
+  end;
+{$METHODINFO OFF}
+
+implementation
+
+{ TServiceUsuario }
+
+function TServiceUsuario.getUsuarios(Value: string): string;
+begin
+//
+end;
+
+function TServiceUsuario.ReverseString(Value: string): string;
+begin
+//
+end;
+
+end.

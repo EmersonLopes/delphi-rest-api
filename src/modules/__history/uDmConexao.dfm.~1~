@@ -1,0 +1,16 @@
+object DmConexao: TDmConexao
+  OldCreateOrder = False
+  Height = 150
+  Width = 215
+  object ConexaoBD: TFDConnection
+    Params.Strings = (
+      'Server=WIN-EMLM3JPSSSM\SQL2016'
+      'Database=LOGTECH_OS_TESTE'
+      'User_Name=SA'
+      'Password=123456'
+      'DriverID=MSSQL')
+    LoginPrompt = False
+    Left = 40
+    Top = 24
+  end
+end
