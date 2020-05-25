@@ -12,7 +12,7 @@ uses
 
 type
   TDmConexao = class(TDataModule)
-    ConexaoBD: TFDConnection;
+    ConexaoBD_: TFDConnection;
     mtSettings: TFDMemTable;
     mtSettingscontext: TStringField;
     mtSettingsport: TIntegerField;
@@ -46,7 +46,7 @@ procedure TDmConexao.ConectarBD;
 begin
   if not mtSettings.Active then
     Exit;
-
+  {
   if ConexaoBD.Connected then
     Exit
   else
@@ -70,6 +70,7 @@ begin
     end;
 
   end;
+  }
 end;
 
 procedure TDmConexao.DataModuleCreate(Sender: TObject);

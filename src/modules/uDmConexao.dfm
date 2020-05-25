@@ -3,7 +3,7 @@ object DmConexao: TDmConexao
   OnCreate = DataModuleCreate
   Height = 150
   Width = 215
-  object ConexaoBD: TFDConnection
+  object ConexaoBD_: TFDConnection
     Params.Strings = (
       
         'Database=C:\Users\Emerson\AppData\Roaming\HK-Software\IBExpert\M' +

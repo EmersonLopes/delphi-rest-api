@@ -77,7 +77,6 @@ object WebModule1: TWebModule1
         DirectoryMask = '\templates\*'
       end>
     RootDirectory = '.'
-    VirtualPath = '/'
     Left = 56
     Top = 136
   end

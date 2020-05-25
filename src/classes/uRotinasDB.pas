@@ -31,7 +31,7 @@ var
 begin
   Qry := TFDQuery.Create(nil);
   try
-    Qry.Connection := DmConexao.ConexaoBD;
+    Qry.Connection := DmConexao.ConexaoBD_;
     Qry.SQL.Text   := p_Select;
     Qry.Open;
 
@@ -47,7 +47,7 @@ var
 begin
   Qry := TFDQuery.Create(nil);
   try
-    Qry.Connection := DmConexao.ConexaoBD;
+    Qry.Connection := DmConexao.ConexaoBD_;
     try
       Qry.Close;
       Qry.SQL.Clear;
