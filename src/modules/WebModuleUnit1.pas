@@ -19,6 +19,7 @@ type
     WebFileDispatcher1: TWebFileDispatcher;
     DSProxyGenerator1: TDSProxyGenerator;
     DSServerMetaDataProvider1: TDSServerMetaDataProvider;
+    DSAuthenticationManager1: TDSAuthenticationManager;
     procedure ServerFunctionInvokerHTMLTag(Sender: TObject; Tag: TTag;
       const TagString: string; TagParams: TStrings; var ReplaceText: string);
     procedure WebModuleDefaultAction(Sender: TObject;
@@ -32,6 +33,9 @@ type
     procedure DSHTTPWebDispatcher1FormatResult(Sender: TObject;
       var ResultVal: TJSONValue; const Command: TDBXCommand;
       var Handled: Boolean);
+    procedure DSAuthenticationManager1UserAuthenticate(Sender: TObject;
+      const Protocol, Context, User, Password: string; var valid: Boolean;
+      UserRoles: TStrings);
   private
     { Private declarations }
     FServerFunctionInvokerAction: TWebActionItem;
@@ -49,6 +53,15 @@ implementation
 {$R *.dfm}
 
 uses ServerMethodsUnit1, ServerContainerUnit1, Web.WebReq;
+
+procedure TWebModule1.DSAuthenticationManager1UserAuthenticate(Sender: TObject;
+  const Protocol, Context, User, Password: string; var valid: Boolean;
+  UserRoles: TStrings);
+begin
+  if (User = 'administrador') and (Password = '789') then
+    valid:= True
+  else valid:= False;
+end;
 
 procedure TWebModule1.DSHTTPWebDispatcher1FormatResult(Sender: TObject;
   var ResultVal: TJSONValue; const Command: TDBXCommand; var Handled: Boolean);

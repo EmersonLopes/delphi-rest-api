@@ -23,6 +23,7 @@ object WebModule1: TWebModule1
   Width = 414
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Filters = <>
+    AuthenticationManager = DSAuthenticationManager1
     OnFormatResult = DSHTTPWebDispatcher1FormatResult
     WebDispatch.PathInfo = 'datasnap*'
     Left = 96
@@ -90,5 +91,11 @@ object WebModule1: TWebModule1
   object DSServerMetaDataProvider1: TDSServerMetaDataProvider
     Left = 208
     Top = 248
+  end
+  object DSAuthenticationManager1: TDSAuthenticationManager
+    OnUserAuthenticate = DSAuthenticationManager1UserAuthenticate
+    Roles = <>
+    Left = 224
+    Top = 112
   end
 end
