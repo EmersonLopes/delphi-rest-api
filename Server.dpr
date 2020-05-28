@@ -24,7 +24,11 @@ uses
   uUsuarioModel in 'src\model\uUsuarioModel.pas',
   uJSONUtil in 'src\utils\uJSONUtil.pas',
   uConexao in 'src\classes\uConexao.pas',
-  uConexaoController in 'src\controllers\uConexaoController.pas';
+  uConexaoController in 'src\controllers\uConexaoController.pas',
+  uServiceProduto in 'src\services\uServiceProduto.pas',
+  uProdutoController in 'src\controllers\uProdutoController.pas',
+  uProdutoModel in 'src\model\uProdutoModel.pas',
+  uProdutoDAO in 'src\dao\uProdutoDAO.pas';
 
 {$R *.res}
 
