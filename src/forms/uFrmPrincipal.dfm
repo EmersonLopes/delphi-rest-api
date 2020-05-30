@@ -138,73 +138,102 @@ object FrmPrincipal: TFrmPrincipal
         Left = 11
         Top = 95
         Width = 446
-        Height = 138
+        Height = 178
         Caption = 'Banco de dados'
         TabOrder = 1
         object Label3: TLabel
           Left = 20
-          Top = 21
+          Top = 69
           Width = 40
           Height = 13
           Caption = 'Servidor'
         end
         object Label4: TLabel
           Left = 223
-          Top = 21
+          Top = 69
           Width = 29
           Height = 13
           Caption = 'Banco'
         end
         object Label5: TLabel
           Left = 20
-          Top = 77
+          Top = 125
           Width = 36
           Height = 13
           Caption = 'Usu'#225'rio'
         end
         object Label6: TLabel
           Left = 223
-          Top = 77
+          Top = 125
           Width = 30
           Height = 13
           Caption = 'Senha'
         end
+        object Label7: TLabel
+          Left = 20
+          Top = 21
+          Width = 64
+          Height = 13
+          Caption = 'Tipo conex'#227'o'
+        end
         object EdtDataBase: TDBEdit
           Left = 223
-          Top = 40
+          Top = 88
           Width = 197
           Height = 21
           DataField = 'database'
           DataSource = dsSettings
-          TabOrder = 1
+          TabOrder = 2
         end
         object EdtPassword: TDBEdit
           Left = 223
-          Top = 96
+          Top = 144
           Width = 197
           Height = 21
           DataField = 'password'
           DataSource = dsSettings
           PasswordChar = '*'
-          TabOrder = 3
+          TabOrder = 4
         end
         object EdtUser: TDBEdit
           Left = 20
-          Top = 96
+          Top = 144
           Width = 197
           Height = 21
           DataField = 'user'
           DataSource = dsSettings
-          TabOrder = 2
+          TabOrder = 3
         end
         object EdtHost: TDBEdit
           Left = 20
-          Top = 40
+          Top = 88
           Width = 197
           Height = 21
           DataField = 'host'
           DataSource = dsSettings
+          TabOrder = 1
+        end
+        object cbTipoConexao: TComboBox
+          Left = 20
+          Top = 40
+          Width = 400
+          Height = 21
+          ItemIndex = 0
           TabOrder = 0
+          Text = 'MS Sql Server'
+          OnChange = cbTipoConexaoChange
+          Items.Strings = (
+            'MS Sql Server'
+            'Firebird')
+        end
+        object DBEdit1: TDBEdit
+          Left = 320
+          Top = 13
+          Width = 100
+          Height = 21
+          DataField = 'tipoConexao'
+          DataSource = dsSettings
+          TabOrder = 5
         end
       end
     end
@@ -571,6 +600,10 @@ object FrmPrincipal: TFrmPrincipal
     end
     object mtSettingspassword: TStringField
       FieldName = 'password'
+      Size = 100
+    end
+    object mtSettingstipoConexao: TStringField
+      FieldName = 'tipoConexao'
       Size = 100
     end
   end

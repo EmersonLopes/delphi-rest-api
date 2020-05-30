@@ -18,4 +18,10 @@ object ServerContainer1: TServerContainer1
     Left = 72
     Top = 83
   end
+  object DSServerClassProduto: TDSServerClass
+    OnGetClass = DSServerClassProdutoGetClass
+    Server = DSServer1
+    Left = 72
+    Top = 139
+  end
 end

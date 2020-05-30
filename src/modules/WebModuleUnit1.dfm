@@ -19,8 +19,8 @@ object WebModule1: TWebModule1
       OnAction = WebModuleDefaultAction
     end>
   BeforeDispatch = WebModuleBeforeDispatch
-  Height = 333
-  Width = 414
+  Height = 348
+  Width = 410
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Filters = <>
     AuthenticationManager = DSAuthenticationManager1
@@ -78,6 +78,7 @@ object WebModule1: TWebModule1
         DirectoryMask = '\templates\*'
       end>
     RootDirectory = '.'
+    VirtualPath = '/'
     Left = 56
     Top = 136
   end

@@ -8,7 +8,7 @@ uses FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Er
      FireDAC.Stan.Pool, Data.DB, System.SysUtils, FireDAC.VCLUI.Wait, Forms, IniFiles,
      FireDAC.Stan.Def, FireDAC.Phys, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef,
      FireDAC.Moni.Base, FireDAC.Moni.FlatFile, FireDAC.Phys.MSSQLDef,
-     FireDAC.Phys.MSSQL,FireDAC.Phys.ODBCBase, uDmConexao;
+     FireDAC.Phys.MSSQL,FireDAC.Phys.ODBCBase;
 type
   TConexao = class
   private
@@ -32,6 +32,8 @@ implementation
 
 { TConexao }
 
+uses uFrmPrincipal;
+
 procedure TConexao.ConfigurarConexao;
 var
   wl_DataBase, wl_Host, wl_User, wl_Pass: String;
@@ -40,21 +42,21 @@ begin
   FConn.Params.Clear;
   FConn.LoginPrompt := False;
 
-  if False then //FIREBIRD
+  if FrmPrincipal.mtSettingstipoConexao.AsString = 'Firebird' then //FIREBIRD
   begin
     FConn.Params.DriverID := 'FB';
-    FConn.Params.Values['Server'] := DmConexao.mtSettingshost.AsString;
-    FConn.Params.Database := DmConexao.mtSettingsdatabase.AsString;
-    FConn.Params.UserName := DmConexao.mtSettingsuser.AsString;
-    FConn.Params.Password := DmConexao.mtSettingspassword.AsString;
+    FConn.Params.Values['Server'] := FrmPrincipal.mtSettingshost.AsString;
+    FConn.Params.Database := FrmPrincipal.mtSettingsdatabase.AsString;
+    FConn.Params.UserName := FrmPrincipal.mtSettingsuser.AsString;
+    FConn.Params.Password := FrmPrincipal.mtSettingspassword.AsString;
   end
   else
   begin// SQL SERVER
     FConn.Params.Clear;
-    FConn.Params.Add('Server='+DmConexao.mtSettingshost.AsString);
-    FConn.Params.Add('Database='+DmConexao.mtSettingsdatabase.AsString);
-    FConn.Params.Add('User_Name='+DmConexao.mtSettingsuser.AsString);
-    FConn.Params.Add('Password='+DmConexao.mtSettingspassword.AsString);
+    FConn.Params.Add('Server='+FrmPrincipal.mtSettingshost.AsString);
+    FConn.Params.Add('Database='+FrmPrincipal.mtSettingsdatabase.AsString);
+    FConn.Params.Add('User_Name='+FrmPrincipal.mtSettingsuser.AsString);
+    FConn.Params.Add('Password='+FrmPrincipal.mtSettingspassword.AsString);
     FConn.Params.Add('ExtendedMetadata=True');
     FConn.Params.Add('MonitorBy=FlatFile');
     FConn.Params.Add('DriverID=MSSQL');

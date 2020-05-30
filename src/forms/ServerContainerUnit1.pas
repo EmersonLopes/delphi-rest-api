@@ -11,9 +11,12 @@ type
     DSServer1: TDSServer;
     DSServerClass1: TDSServerClass;
     DSServerClassUsuario: TDSServerClass;
+    DSServerClassProduto: TDSServerClass;
     procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure DSServerClassUsuarioGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure DSServerClassProdutoGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
   private
     { Private declarations }
@@ -30,7 +33,7 @@ implementation
 {$R *.dfm}
 
 uses
-  ServerMethodsUnit1, uServiceUsuario;
+  ServerMethodsUnit1, uServiceUsuario, uServiceProduto;
 
 var
   FModule: TComponent;
@@ -57,6 +60,12 @@ procedure TServerContainer1.DSServerClass1GetClass(
   DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethodsUnit1.TServerMethods1;
+end;
+
+procedure TServerContainer1.DSServerClassProdutoGetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := uServiceProduto.TServiceProduto;
 end;
 
 procedure TServerContainer1.DSServerClassUsuarioGetClass(

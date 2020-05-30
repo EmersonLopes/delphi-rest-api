@@ -54,6 +54,10 @@ type
     TrayIcon1: TTrayIcon;
     TabSheet3: TTabSheet;
     StatusBar1: TStatusBar;
+    Label7: TLabel;
+    cbTipoConexao: TComboBox;
+    mtSettingstipoConexao: TStringField;
+    DBEdit1: TDBEdit;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
@@ -64,6 +68,7 @@ type
     procedure ApplicationEvents1Minimize(Sender: TObject);
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure cbTipoConexaoChange(Sender: TObject);
   private
     FServer: TIdHTTPWebBrokerBridge;
     procedure StartServer;
@@ -168,6 +173,11 @@ begin
   FServer.Bindings.Clear;
 end;
 
+procedure TFrmPrincipal.cbTipoConexaoChange(Sender: TObject);
+begin
+  DBEdit1.Text := cbTipoConexao.Text;
+end;
+
 procedure TFrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
     CanClose := Pergunta('Deseja fechar a aplicação?');
@@ -179,6 +189,8 @@ begin
   mtSettings.Open;
   if FileExists(ExtractFilePath(Application.ExeName)+'settings.json') then
     mtSettings.LoadFromFile(ExtractFilePath(Application.ExeName)+'settings.json',TFDStorageFormat.sfJSON);
+
+  cbTipoConexao.ItemIndex := cbTipoConexao.Items.IndexOf(mtSettingstipoConexao.AsString);
 
   StatusBar1.Panels[0].Text :=  NomeComputador;
   StatusBar1.Panels[1].Text :=  GetIP;
@@ -204,11 +216,6 @@ begin
   try
     if not mtSettings.Active then
       mtSettings.Open;
-
-    mtSettings.Edit;
-    mtSettingscontext.AsString := EdtContexto.Text;
-    mtSettingsport.AsString := EdtPorta.Text;
-    mtSettings.Post;
 
     mtSettings.SaveToFile('settings.json',TFDStorageFormat.sfJSON);
 
