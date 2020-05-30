@@ -226,7 +226,7 @@ object FrmPrincipal: TFrmPrincipal
             'MS Sql Server'
             'Firebird')
         end
-        object DBEdit1: TDBEdit
+        object EdtTipoConexao: TDBEdit
           Left = 320
           Top = 13
           Width = 100
@@ -234,6 +234,7 @@ object FrmPrincipal: TFrmPrincipal
           DataField = 'tipoConexao'
           DataSource = dsSettings
           TabOrder = 5
+          Visible = False
         end
       end
     end
@@ -586,6 +587,10 @@ object FrmPrincipal: TFrmPrincipal
     object mtSettingsport: TIntegerField
       FieldName = 'port'
     end
+    object mtSettingstipoConexao: TStringField
+      FieldName = 'tipoConexao'
+      Size = 100
+    end
     object mtSettingshost: TStringField
       FieldName = 'host'
       Size = 200
@@ -600,10 +605,6 @@ object FrmPrincipal: TFrmPrincipal
     end
     object mtSettingspassword: TStringField
       FieldName = 'password'
-      Size = 100
-    end
-    object mtSettingstipoConexao: TStringField
-      FieldName = 'tipoConexao'
       Size = 100
     end
   end

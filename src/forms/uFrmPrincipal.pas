@@ -57,7 +57,7 @@ type
     Label7: TLabel;
     cbTipoConexao: TComboBox;
     mtSettingstipoConexao: TStringField;
-    DBEdit1: TDBEdit;
+    EdtTipoConexao: TDBEdit;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
@@ -175,7 +175,7 @@ end;
 
 procedure TFrmPrincipal.cbTipoConexaoChange(Sender: TObject);
 begin
-  DBEdit1.Text := cbTipoConexao.Text;
+  EdtTipoConexao.Text := cbTipoConexao.Text;
 end;
 
 procedure TFrmPrincipal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -271,6 +271,13 @@ begin
   begin
     MsgAviso('Infome a porta do serviço');
     EdtPorta.SetFocus;
+    Exit(false);
+  end;
+
+  if EdtTipoConexao.Text = '' then
+  begin
+    MsgAviso('Infome o tipo de conexão');
+    cbTipoConexao.SetFocus;
     Exit(false);
   end;
 

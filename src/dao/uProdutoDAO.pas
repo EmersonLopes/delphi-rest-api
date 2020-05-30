@@ -30,8 +30,8 @@ var
   wl_Produto: TProdutoModel;
   wl_Sql: string;
 begin
-  wl_Sql:= 'Select ID_Produto, DESC_Produto, VALOR ' +
-           '  from Produto';
+  wl_Sql:= 'SELECT ID_PRODUTO, DESC_PROD, VALOR ' +
+           '  FROM PRODUTO';
 
   wl_Qry:= FConexao.getQuery;
   wl_Lista:= TObjectList<TProdutoModel>.Create;
@@ -51,7 +51,7 @@ begin
     begin
       wl_Produto:= TProdutoModel.Create;
       wl_Produto.codProduto:= wl_Qry.FieldByName('ID_PRODUTO').AsInteger;
-      wl_Produto.descProduto:= wl_Qry.FieldByName('DESC_PRODUTO').AsString;
+      wl_Produto.descProduto:= wl_Qry.FieldByName('DESC_PROD').AsString;
       wl_Produto.valor:= wl_Qry.FieldByName('VALOR').AsFloat;
       wl_Lista.Add(wl_Produto);
       wl_Qry.Next;
