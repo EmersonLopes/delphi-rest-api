@@ -3,18 +3,21 @@ unit uServiceUsuario;
 interface
 
 uses System.SysUtils, System.Classes, Datasnap.DSServer, Datasnap.DSAuth,
-  System.JSON, uRotinasDB, Usuario, uUsuarioController;
+  System.JSON, uRotinasDB, uUsuarioController;
 
 type
 {$METHODINFO ON}
   TServiceUsuario = class(TComponent)
   private
     { Private declarations }
+    FUsuarioController: TUsuarioController;
+    FJson : TJSONObject;
   public
     { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     function GetUsuarios : TJSONArray;
-    function GetUsuarios2 : TJSONArray;
-    function Login(pLoginUsuario, pSenha: String) : TJSONObject;
+    function Login(pLogin, pSenha : string) : TJSONObject;
   end;
 {$METHODINFO OFF}
 
@@ -23,29 +26,28 @@ implementation
 { TServiceUsuario }
 
 
-
-function TServiceUsuario.GetUsuarios2: TJSONArray;
-var
-  wl_UsuarioController: TUsuarioController;
+constructor TServiceUsuario.Create(AOwner: TComponent);
 begin
-  wl_UsuarioController:= TUsuarioController.Create(nil);
-  try
-    Result := wl_UsuarioController.getUsuarios;
-  finally
-    wl_UsuarioController.Free;
-  end;
+  inherited;
+  FUsuarioController:= TUsuarioController.Create(nil);
+  FJson := TJSONObject.Create;
 end;
 
-function TServiceUsuario.Login(pLoginUsuario, pSenha: String): TJSONObject;
+destructor TServiceUsuario.Destroy;
 begin
-  Result := DataSetToJSON_Object(TUsuario.Login(pLoginUsuario, pSenha));
+  FreeAndNil(FUsuarioController);
+  FreeAndNil(FJson);
+  inherited;
 end;
-
-{ TServiceUsuario }
 
 function TServiceUsuario.GetUsuarios: TJSONArray;
 begin
-  result := DataSetToJSON(TUsuario.GetUsuarios);
+  Result := FUsuarioController.getUsuarios;
+end;
+
+function TServiceUsuario.Login(pLogin, pSenha : string): TJSONObject;
+begin
+  Result := FUsuarioController.Login(pLogin, pSenha);
 end;
 
 end.

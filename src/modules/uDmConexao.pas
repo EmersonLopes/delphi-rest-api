@@ -8,18 +8,12 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MSSQL,
   FireDAC.Phys.MSSQLDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
-  FireDAC.Phys.FB, FireDAC.Phys.FBDef;
+  FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.Phys.IBBase;
 
 type
   TDmConexao = class(TDataModule)
     ConexaoBD_: TFDConnection;
-    mtSettings: TFDMemTable;
-    mtSettingscontext: TStringField;
-    mtSettingsport: TIntegerField;
-    mtSettingshost: TStringField;
-    mtSettingsdatabase: TStringField;
-    mtSettingsuser: TStringField;
-    mtSettingspassword: TStringField;
+    FDPhysFBDriverLink1: TFDPhysFBDriverLink;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -44,8 +38,6 @@ uses
 
 procedure TDmConexao.ConectarBD;
 begin
-  if not mtSettings.Active then
-    Exit;
   {
   if ConexaoBD.Connected then
     Exit
@@ -75,10 +67,7 @@ end;
 
 procedure TDmConexao.DataModuleCreate(Sender: TObject);
 begin
-  if FileExists(ExtractFilePath(Application.ExeName)+'settings.json') then
-    mtSettings.LoadFromFile(ExtractFilePath(Application.ExeName)+'settings.json',TFDStorageFormat.sfJSON);
-
-  ConectarBD;
+//
 end;
 
 end.

@@ -15,10 +15,8 @@ uses
   Vcl.Styles,
   uDialogs in 'src\classes\uDialogs.pas',
   uRotinaSis in 'src\classes\uRotinaSis.pas',
-  uDmConexao in 'src\modules\uDmConexao.pas' {DmConexao: TDataModule},
   uServiceUsuario in 'src\services\uServiceUsuario.pas',
   uRotinasDB in 'src\classes\uRotinasDB.pas',
-  Usuario in 'src\classes\Usuario.pas',
   uUsuarioController in 'src\controllers\uUsuarioController.pas',
   uUsuarioDAO in 'src\dao\uUsuarioDAO.pas',
   uUsuarioModel in 'src\model\uUsuarioModel.pas',
@@ -28,7 +26,8 @@ uses
   uServiceProduto in 'src\services\uServiceProduto.pas',
   uProdutoController in 'src\controllers\uProdutoController.pas',
   uProdutoModel in 'src\model\uProdutoModel.pas',
-  uProdutoDAO in 'src\dao\uProdutoDAO.pas';
+  uProdutoDAO in 'src\dao\uProdutoDAO.pas',
+  uDmConexao in 'src\modules\uDmConexao.pas' {DmConexao: TDataModule};
 
 {$R *.res}
 
@@ -38,7 +37,7 @@ begin
   Application.Initialize;
   TStyleManager.TrySetStyle('Carbon');
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TDmConexao, DmConexao);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+  Application.CreateForm(TDmConexao, DmConexao);
   Application.Run;
 end.

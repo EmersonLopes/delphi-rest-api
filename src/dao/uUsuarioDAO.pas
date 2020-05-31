@@ -12,7 +12,7 @@ type
     public
       constructor Create;
       function getUsuarios : TObjectList<TUsuarioModel>;
-      function getLogin(pUsuario, pSenha: string): TObjectList<TUsuarioModel>;
+      function Login(pUsuario, pSenha: string): Boolean;
   end;
 
 implementation
@@ -24,41 +24,51 @@ begin
   FConexao:= TConexaoController.getInstantce().Conexao;
 end;
 
-function TUsuarioDAO.getLogin(pUsuario, pSenha: string): TObjectList<TUsuarioModel>;
+function TUsuarioDAO.Login(pUsuario, pSenha: string): Boolean;
 var
   wl_Qry: TFDQuery;
   wl_Lista: TObjectList<TUsuarioModel>;
+  wl_ok : Boolean;
   wl_Login: TUsuarioModel;
   wl_Sql: string;
 begin
-  wl_Sql:= 'Select CodUsuario, LoginUsuario ' +
-           '  from usuario' +
-           ' where LoginUsuario = '+QuotedStr(pUsuario)+
-           //'   and SenhaUsuario = '+QuotedStr(Encrypt(pSenha))+
-           '   and ativo = 1';
   wl_Qry:= FConexao.getQuery;
-  wl_Lista:= TObjectList<TUsuarioModel>.Create;
-  wl_Qry.Open(wl_Sql);
-  if wl_Qry.IsEmpty then
-  begin
-    wl_Login:= TUsuarioModel.Create;
-    wl_Login.codUsuario:= 0;
-    wl_Login.loginUsuario:= pUsuario;
-    wl_Lista.Add(wl_Login);
-  end
-    else
-  begin
-    wl_Qry.First;
-    while not wl_qry.Eof do
+  try
+    wl_Sql:= 'Select ID_USUARIO, LOGIN_USUARIO ' +
+             '  from USUARIO' +
+             ' where UPPER(LOGIN_USUARIO) = '+UpperCase(QuotedStr(pUsuario))+
+             '   and SENHA_USUARIO = '+QuotedStr(pSenha)+
+             '   and ATIVO = 1';
+    //wl_Lista:= TObjectList<TUsuarioModel>.Create;
+    wl_Qry.Open(wl_Sql);
+    if wl_Qry.IsEmpty then
     begin
       wl_Login:= TUsuarioModel.Create;
-      wl_Login.codUsuario:= wl_Qry.FieldByName('codUsuario').AsInteger;
-      wl_Login.loginUsuario:= wl_Qry.FieldByName('loginUsuario').AsString;
-      wl_Lista.Add(wl_Login);
-      wl_Qry.Next;
+      wl_Login.codUsuario:= 0;
+      wl_Login.loginUsuario:= pUsuario;
+      //wl_Lista.Add(wl_Login);
+      wl_ok := false;
+    end
+      else
+    begin
+      wl_ok := True;
+      {
+      wl_Qry.First;
+      while not wl_qry.Eof do
+      begin
+        wl_Login:= TUsuarioModel.Create;
+        wl_Login.codUsuario:= wl_Qry.FieldByName('codUsuario').AsInteger;
+        wl_Login.loginUsuario:= wl_Qry.FieldByName('loginUsuario').AsString;
+        wl_Lista.Add(wl_Login);
+        wl_Qry.Next;
+      end;
+      }
     end;
+    Result:= wl_ok;
+  finally
+    wl_Qry.Free;
   end;
-  Result:= wl_Lista;
+
 end;
 
 function TUsuarioDAO.getUsuarios: TObjectList<TUsuarioModel>;
@@ -68,32 +78,37 @@ var
   wl_Login: TUsuarioModel;
   wl_Sql: string;
 begin
-  wl_Sql:= 'Select ID_USUARIO, USUARIO ' +
-           '  from usuario';
+  wl_Sql:= 'Select ID_USUARIO, LOGIN_USUARIO ' +
+           '  from USUARIO';
 
   wl_Qry:= FConexao.getQuery;
-  wl_Lista:= TObjectList<TUsuarioModel>.Create;
-  wl_Qry.Open(wl_Sql);
-  if wl_Qry.IsEmpty then
-  begin
-    wl_Login:= TUsuarioModel.Create;
-    wl_Login.codUsuario:= 0;
-    wl_Login.loginUsuario:= '';
-    wl_Lista.Add(wl_Login);
-  end
-    else
-  begin
-    wl_Qry.First;
-    while not wl_qry.Eof do
+  try
+    wl_Lista:= TObjectList<TUsuarioModel>.Create;
+    wl_Qry.Open(wl_Sql);
+    if wl_Qry.IsEmpty then
     begin
       wl_Login:= TUsuarioModel.Create;
-      wl_Login.codUsuario:= wl_Qry.FieldByName('ID_USUARIO').AsInteger;
-      wl_Login.loginUsuario:= wl_Qry.FieldByName('USUARIO').AsString;
+      wl_Login.codUsuario:= 0;
+      wl_Login.loginUsuario:= '';
       wl_Lista.Add(wl_Login);
-      wl_Qry.Next;
+    end
+      else
+    begin
+      wl_Qry.First;
+      while not wl_qry.Eof do
+      begin
+        wl_Login:= TUsuarioModel.Create;
+        wl_Login.codUsuario:= wl_Qry.FieldByName('ID_USUARIO').AsInteger;
+        wl_Login.loginUsuario:= wl_Qry.FieldByName('LOGIN_USUARIO').AsString;
+        wl_Lista.Add(wl_Login);
+        wl_Qry.Next;
+      end;
     end;
+    Result:= wl_Lista;
+  finally
+    wl_Qry.Free;
   end;
-  Result:= wl_Lista;
+
 end;
 
 end.

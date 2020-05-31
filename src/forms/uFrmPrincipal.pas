@@ -42,7 +42,6 @@ type
     EdtContexto: TDBEdit;
     dsSettings: TDataSource;
     memoLog: TMemo;
-    RichEdtLog: TRichEdit;
     EdtDataBase: TDBEdit;
     EdtPassword: TDBEdit;
     EdtUser: TDBEdit;
@@ -79,9 +78,6 @@ type
     { Public declarations }
     procedure SaveSettings;
     function ValidaConfiguracao : boolean;
-
-    procedure LogError(pMsg : string);
-    procedure LogInfo(pMsg : string);
   end;
 
 var
@@ -98,7 +94,6 @@ procedure TFrmPrincipal.ApplicationEvents1Exception(Sender: TObject;
   E: Exception);
 begin
   memoLog.Lines.Add('ERROR: '+E.Message);
-  LogError('ERROR: '+E.Message);
 end;
 
 procedure TFrmPrincipal.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
@@ -197,18 +192,6 @@ begin
   StatusBar1.Panels[2].Text :=  'Versão: ' + VersaoExe(Application.ExeName);
 
 
-end;
-
-procedure TFrmPrincipal.LogError(pMsg: string);
-begin
-  RichEdtLog.SelAttributes.Color := clRed;
-  RichEdtLog.Lines.Add(pMsg);
-end;
-
-procedure TFrmPrincipal.LogInfo(pMsg: string);
-begin
-  RichEdtLog.SelAttributes.Color := clWindowText;
-  RichEdtLog.Lines.Add(pMsg);
 end;
 
 procedure TFrmPrincipal.SaveSettings;

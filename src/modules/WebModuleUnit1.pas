@@ -3,13 +3,11 @@ unit WebModuleUnit1;
 interface
 
 uses
-  System.SysUtils, System.Classes, Web.HTTPApp, Datasnap.DSHTTPCommon,
-  Datasnap.DSHTTPWebBroker, Datasnap.DSServer,
-  Web.WebFileDispatcher, Web.HTTPProd,
-  DataSnap.DSAuth,
-  Datasnap.DSProxyJavaScript, IPPeerServer, Datasnap.DSMetadata,
-  Datasnap.DSServerMetadata, Datasnap.DSClientMetadata, Datasnap.DSCommonServer,
-  Datasnap.DSHTTP, System.JSON, Data.DBXCommon;
+  System.SysUtils, System.Classes, Web.HTTPApp, IPPeerServer, System.JSON,
+  Data.DBXCommon, Datasnap.DSHTTPCommon, Datasnap.DSProxyJavaScript,
+  Vcl.AppEvnts, Datasnap.DSAuth, Datasnap.DSMetadata, Datasnap.DSServerMetadata,
+  Datasnap.DSClientMetadata, Web.HTTPProd, Datasnap.DSCommonServer,
+  Datasnap.DSHTTPWebBroker, Datasnap.DSHTTP, uDialogs;
 
 type
   TWebModule1 = class(TWebModule)
@@ -20,6 +18,7 @@ type
     DSProxyGenerator1: TDSProxyGenerator;
     DSServerMetaDataProvider1: TDSServerMetaDataProvider;
     DSAuthenticationManager1: TDSAuthenticationManager;
+    ApplicationEvents1: TApplicationEvents;
     procedure ServerFunctionInvokerHTMLTag(Sender: TObject; Tag: TTag;
       const TagString: string; TagParams: TStrings; var ReplaceText: string);
     procedure WebModuleDefaultAction(Sender: TObject;
@@ -36,6 +35,7 @@ type
     procedure DSAuthenticationManager1UserAuthenticate(Sender: TObject;
       const Protocol, Context, User, Password: string; var valid: Boolean;
       UserRoles: TStrings);
+    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     { Private declarations }
     FServerFunctionInvokerAction: TWebActionItem;
@@ -54,13 +54,24 @@ implementation
 
 uses ServerMethodsUnit1, ServerContainerUnit1, Web.WebReq;
 
+procedure TWebModule1.ApplicationEvents1Exception(Sender: TObject;
+  E: Exception);
+begin
+  addError(E.Message);
+end;
+
 procedure TWebModule1.DSAuthenticationManager1UserAuthenticate(Sender: TObject;
   const Protocol, Context, User, Password: string; var valid: Boolean;
   UserRoles: TStrings);
 begin
   if (User = 'administrador') and (Password = '789') then
     valid:= True
-  else valid:= False;
+  else
+  begin
+    valid:= False;
+    addError('Authenticate error. User: '+ User + ', Password: '+Password);
+  end;
+
 end;
 
 procedure TWebModule1.DSHTTPWebDispatcher1FormatResult(Sender: TObject;

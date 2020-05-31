@@ -245,26 +245,10 @@ object FrmPrincipal: TFrmPrincipal
         Left = 0
         Top = 0
         Width = 725
-        Height = 105
-        Align = alTop
-        Lines.Strings = (
-          'memoLog')
-        TabOrder = 0
-      end
-      object RichEdtLog: TRichEdit
-        Left = 0
-        Top = 105
-        Width = 725
-        Height = 324
+        Height = 429
         Align = alClient
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-        Zoom = 100
+        TabOrder = 0
+        ExplicitHeight = 97
       end
     end
   end
@@ -289,8 +273,8 @@ object FrmPrincipal: TFrmPrincipal
     OnException = ApplicationEvents1Exception
     OnIdle = ApplicationEvents1Idle
     OnMinimize = ApplicationEvents1Minimize
-    Left = 664
-    Top = 408
+    Left = 632
+    Top = 320
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit

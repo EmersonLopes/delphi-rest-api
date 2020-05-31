@@ -34,15 +34,15 @@ end;
 
 function TProdutoController.getProdutos: TJSONArray;
 var
-  wl_ProdutoDAO: TProdutoDAO;
+  //wl_ProdutoDAO: TProdutoDAO;
   wl_Lista: TObjectList<TProdutoModel>;
 begin
-  wl_ProdutoDAO := TProdutoDAO.Create;
+  //wl_ProdutoDAO := TProdutoDAO.Create;
   try
-    wl_Lista:= wl_ProdutoDAO.getProdutos;
+    wl_Lista:= FProdutoDAO.getProdutos;
     Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
   finally
-    wl_ProdutoDAO.Free;
+    //wl_ProdutoDAO.Free;
   end;
 end;
 

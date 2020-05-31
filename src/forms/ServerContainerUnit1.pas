@@ -4,7 +4,7 @@ interface
 
 uses System.SysUtils, System.Classes,
   Datasnap.DSServer, Datasnap.DSCommonServer,
-  IPPeerServer, IPPeerAPI, Datasnap.DSAuth;
+  IPPeerServer, IPPeerAPI, Datasnap.DSAuth, Vcl.AppEvnts;
 
 type
   TServerContainer1 = class(TDataModule)
@@ -12,12 +12,14 @@ type
     DSServerClass1: TDSServerClass;
     DSServerClassUsuario: TDSServerClass;
     DSServerClassProduto: TDSServerClass;
+    ApplicationEvents1: TApplicationEvents;
     procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure DSServerClassUsuarioGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure DSServerClassProdutoGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
+    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     { Private declarations }
   public
@@ -33,7 +35,7 @@ implementation
 {$R *.dfm}
 
 uses
-  ServerMethodsUnit1, uServiceUsuario, uServiceProduto;
+  uDialogs, ServerMethodsUnit1, uServiceUsuario, uServiceProduto;
 
 var
   FModule: TComponent;
@@ -42,6 +44,12 @@ var
 function DSServer: TDSServer;
 begin
   Result := FDSServer;
+end;
+
+procedure TServerContainer1.ApplicationEvents1Exception(Sender: TObject;
+  E: Exception);
+begin
+  addError(E.Message);
 end;
 
 constructor TServerContainer1.Create(AOwner: TComponent);

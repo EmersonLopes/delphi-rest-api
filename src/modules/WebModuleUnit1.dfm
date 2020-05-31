@@ -99,4 +99,9 @@ object WebModule1: TWebModule1
     Left = 224
     Top = 112
   end
+  object ApplicationEvents1: TApplicationEvents
+    OnException = ApplicationEvents1Exception
+    Left = 274
+    Top = 36
+  end
 end

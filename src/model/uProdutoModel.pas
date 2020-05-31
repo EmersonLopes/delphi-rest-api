@@ -11,15 +11,18 @@ type
     FcodProduto: Integer;
     FdescProduto : String;
     Fvalor : Double;
+    Fdetalhes : String;
     procedure SetcodProduto(const Value: Integer);
     procedure SetdescProduto(const Value: String);
     procedure Setvalor(const Value: Double);
+    procedure Setdetalhes(const Value: String);
 
     public
       //Atributos
       property codProduto: Integer read FcodProduto write SetcodProduto;
       property descProduto: String read FdescProduto write SetdescProduto;
       property valor: Double read Fvalor write Setvalor;
+      property detalhes: String read Fdetalhes write Setdetalhes;
   end;
 
 implementation
@@ -39,6 +42,11 @@ begin
   FdescProduto := Value;
 end;
 
+
+procedure TProdutoModel.Setdetalhes(const Value: String);
+begin
+  Fdetalhes := Value;
+end;
 
 procedure TProdutoModel.Setvalor(const Value: Double);
 begin

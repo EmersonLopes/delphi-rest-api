@@ -10,8 +10,12 @@ uses
   procedure MsgErro(pErro: WideString);
   function Pergunta(pMsg:string):Boolean;
 
+  procedure addError(pErro : string);
+
 
 implementation
+
+uses uFrmPrincipal;
 
 procedure MsgErro(pErro: WideString);
 begin
@@ -34,6 +38,11 @@ begin
 
   if Application.MessageBox(PChar(pMsg), PChar(Application.Title),MB_ICONQUESTION+MB_YESNO) = ID_YES then
     Result := True;
+end;
+
+procedure addError(pErro : string);
+begin
+  FrmPrincipal.memoLog.Lines.Add('ERROR: '+pErro);
 end;
 
 end.

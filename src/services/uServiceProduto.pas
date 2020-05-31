@@ -10,9 +10,13 @@ type
   TServiceProduto = class(TComponent)
   private
     { Private declarations }
+    FProdutoController: TProdutoController;
   public
     { Public declarations }
-    function GetProdutos : TJSONArray;        
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    function GetProdutos : TJSONArray;
+
   end;
 {$METHODINFO OFF}
 
@@ -22,16 +26,22 @@ implementation
 
 
 
-function TServiceProduto.GetProdutos: TJSONArray;
-var
-  wl_ProdutoController: TProdutoController;
+
+constructor TServiceProduto.Create(AOwner: TComponent);
 begin
-  wl_ProdutoController:= TProdutoController.Create(nil);
-  try
-    Result := wl_ProdutoController.getProdutos;
-  finally
-    wl_ProdutoController.Free;
-  end;
+  inherited;
+  FProdutoController:= TProdutoController.Create(nil);
+end;
+
+destructor TServiceProduto.Destroy;
+begin
+  FreeAndNil(FProdutoController);
+  inherited;
+end;
+
+function TServiceProduto.GetProdutos: TJSONArray;
+begin
+  Result := FProdutoController.getProdutos;
 end;
 
 end.

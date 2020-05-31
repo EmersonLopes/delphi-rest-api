@@ -24,4 +24,9 @@ object ServerContainer1: TServerContainer1
     Left = 72
     Top = 139
   end
+  object ApplicationEvents1: TApplicationEvents
+    OnException = ApplicationEvents1Exception
+    Left = 215
+    Top = 119
+  end
 end
