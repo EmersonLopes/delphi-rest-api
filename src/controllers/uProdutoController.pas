@@ -13,10 +13,14 @@ type
       constructor Create(pOwner: TComponent); override;
       destructor Destroy; override;
 
-      function getProdutos : TJSONArray;      
+      function getProdutos : TJSONArray;
+      function updateProdutos(pProduto : TJSONObject): TJSONObject;
   end;
 
 implementation
+
+uses
+  REST.Json;
 
 { TProdutoController }
 
@@ -43,6 +47,19 @@ begin
     Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
   finally
     //wl_ProdutoDAO.Free;
+  end;
+end;
+
+function TProdutoController.updateProdutos(pProduto : TJSONObject): TJSONObject;
+var
+  wlProduto : TProdutoModel;
+begin
+  wlProduto := TJson.JsonToObject<TProdutoModel>(pProduto);
+  try
+    wlProduto := FProdutoDAO.updateProduto(wlProduto);
+    Result := TJson.ObjectToJsonObject(wlProduto);
+  finally
+    //wlProduto.Free;
   end;
 end;
 
