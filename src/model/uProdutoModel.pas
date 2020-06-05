@@ -25,6 +25,26 @@ type
       property detalhes: String read Fdetalhes write Setdetalhes;
   end;
 
+type
+  TProdutoImagemModel = class
+    private
+    FcodProdutoImagem: Integer;
+    FcodProduto: Integer;
+    Fimagem : String;
+    FdescImagem : String;
+    procedure SetcodProduto(const Value: Integer);
+    procedure SetdescImagem(const Value: String);
+    procedure SetFcodProdutoImagem(const Value: Integer);
+    procedure Setimagem(const Value: String);
+
+    public
+      //Atributos
+      property codProdutoImagem: Integer read FcodProdutoImagem write SetFcodProdutoImagem;
+      property codProduto: Integer read FcodProduto write SetcodProduto;
+      property imagem: String read Fimagem write Setimagem;
+      property descImagem: String read FdescImagem write SetdescImagem;
+  end;
+
 implementation
 
 { TProdutoModel }
@@ -51,6 +71,28 @@ end;
 procedure TProdutoModel.Setvalor(const Value: Double);
 begin
   Fvalor := Value;
+end;
+
+{ TProdutoImagemModel }
+
+procedure TProdutoImagemModel.SetcodProduto(const Value: Integer);
+begin
+  FcodProduto := Value;
+end;
+
+procedure TProdutoImagemModel.SetdescImagem(const Value: String);
+begin
+  FdescImagem := Value;
+end;
+
+procedure TProdutoImagemModel.SetFcodProdutoImagem(const Value: Integer);
+begin
+  FcodProdutoImagem := Value;
+end;
+
+procedure TProdutoImagemModel.Setimagem(const Value: String);
+begin
+  Fimagem := Value;
 end;
 
 end.

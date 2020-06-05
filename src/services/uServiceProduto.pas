@@ -17,6 +17,8 @@ type
     destructor Destroy; override;
     function GetProdutos : TJSONArray;
     function updateProdutos(pProduto : TJSONObject) : TJSONObject;
+    function updateImagem(pImagem : TJSONObject) : TJSONObject;
+
 
   end;
 {$METHODINFO OFF}
@@ -43,6 +45,11 @@ end;
 function TServiceProduto.GetProdutos: TJSONArray;
 begin
   Result := FProdutoController.getProdutos;
+end;
+
+function TServiceProduto.updateImagem(pImagem: TJSONObject): TJSONObject;
+begin
+  result := FProdutoController.updateImagem(pImagem);
 end;
 
 function TServiceProduto.updateProdutos(pProduto : TJSONObject): TJSONObject;

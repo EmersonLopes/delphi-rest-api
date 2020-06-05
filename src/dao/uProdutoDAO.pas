@@ -9,11 +9,13 @@ type
   TProdutoDAO = class
     private
       FConexao: TConexao;
-      function getUltimo: TProdutoModel;
+      function getUltimoProduto: TProdutoModel;
+      function getUltimoProdutoImagem: TProdutoImagemModel;
     public
       constructor Create;
       function getProdutos : TObjectList<TProdutoModel>;
       function updateProduto(pProduto : TProdutoModel) : TProdutoModel;
+      function updateImagem(pImagem : TProdutoImagemModel) : TProdutoImagemModel;
   end;
 
 implementation
@@ -70,7 +72,41 @@ begin
 
 end;
 
-function TProdutoDAO.getUltimo: TProdutoModel;
+function TProdutoDAO.getUltimoProdutoImagem: TProdutoImagemModel;
+var
+  wl_Qry: TFDQuery;
+  wl_ProdutoImagem: TProdutoImagemModel;
+  wl_Sql: string;
+begin
+  wl_Qry:= FConexao.getQuery;
+  try
+    wl_Sql:= 'SELECT ID_PRODUTO_IMAGEM, ID_PRODUTO, IMAGEM, DESC_IMAGEM ' +
+             'FROM PRODUTO_IMAGEM '+
+             'WHERE ID_PRODUTO_IMAGEM = (SELECT MAX(ID_PRODUTO_IMAGEM) FROM PRODUTO_IMAGEM)';
+
+    wl_Qry.Open(wl_Sql);
+    if wl_Qry.IsEmpty then
+    begin
+      wl_ProdutoImagem.codProdutoImagem := 0;
+      wl_ProdutoImagem.codProduto := 0;
+      wl_ProdutoImagem.imagem := '';
+      wl_ProdutoImagem.descImagem := '';
+    end
+      else
+    begin
+      wl_ProdutoImagem:= TProdutoImagemModel.Create;
+      wl_ProdutoImagem.codProdutoImagem := wl_Qry.FieldByName('ID_PRODUTO_IMAGEM').AsInteger;
+      wl_ProdutoImagem.codProduto := wl_Qry.FieldByName('ID_PRODUTO').AsInteger;
+      wl_ProdutoImagem.imagem := wl_Qry.FieldByName('IMAGEM').AsString;
+      wl_ProdutoImagem.descImagem := wl_Qry.FieldByName('DESC_IMAGEM').AsString;
+    end;
+    Result:= wl_ProdutoImagem;
+  finally
+    wl_Qry.Free;
+  end;
+end;
+
+function TProdutoDAO.getUltimoProduto: TProdutoModel;
 var
   wl_Qry: TFDQuery;
   wl_Lista: TObjectList<TProdutoModel>;
@@ -107,6 +143,46 @@ begin
   end;
 end;
 
+function TProdutoDAO.updateImagem(pImagem: TProdutoImagemModel): TProdutoImagemModel;
+var
+
+  wl_Qry: TFDQuery;
+  wlI : Integer;
+  wl_Produto: TProdutoModel;
+  wl_Sql: string;
+begin
+  wl_Qry:= FConexao.getQuery;
+  try
+    try
+      wl_Sql:= 'INSERT INTO PRODUTO_IMAGEM (ID_PRODUTO, IMAGEM, DESC_IMAGEM) ' +
+               'VALUES(:ID_PRODUTO, :IMAGEM, :DESC_IMAGEM)';
+
+
+      wlI := wl_Qry.ExecSQL(
+      wl_Sql,[
+
+      pImagem.codProduto,
+      pImagem.imagem,
+      pImagem.descImagem ]
+      );
+
+      if wlI > 0 then
+        Result:= getUltimoProdutoImagem
+      else
+        raise Exception.Create('Nothing inserted.');
+    except on E: Exception do
+      begin
+        pImagem.codProdutoImagem := 0;
+        pImagem.codProduto := 0;
+        pImagem.imagem := '';
+        pImagem.descImagem := '';
+      end;
+    end;
+  finally
+    wl_Qry.Free;
+  end;
+end;
+
 function TProdutoDAO.updateProduto(pProduto : TProdutoModel): TProdutoModel;
 var
   wl_Qry: TFDQuery;
@@ -121,7 +197,7 @@ begin
                'VALUES(:DESC_PROD, :VALOR, :DETALHES)';
 
 
-      wlI = wl_Qry.ExecSQL(
+      wlI := wl_Qry.ExecSQL(
       wl_Sql,[
 
       pProduto.descProduto,
@@ -130,7 +206,7 @@ begin
       );
 
       if wlI > 0 then
-        Result:= getUltimo
+        Result:= getUltimoProduto
       else
         raise Exception.Create('Nothin inserted.');
     except on E: Exception do

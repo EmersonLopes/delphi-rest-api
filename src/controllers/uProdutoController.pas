@@ -15,6 +15,8 @@ type
 
       function getProdutos : TJSONArray;
       function updateProdutos(pProduto : TJSONObject): TJSONObject;
+      function updateImagem(pImagem : TJSONObject): TJSONObject;
+
   end;
 
 implementation
@@ -50,6 +52,19 @@ begin
   end;
 end;
 
+function TProdutoController.updateImagem(pImagem: TJSONObject): TJSONObject;
+var
+  wlImagem : TProdutoImagemModel;
+begin
+  wlImagem := TJson.JsonToObject<TProdutoImagemModel>(pImagem);
+  try
+    wlImagem := FProdutoDAO.updateImagem(wlImagem);
+    Result := TJson.ObjectToJsonObject(wlImagem);
+  finally
+    wlImagem.Free;
+  end;
+end;
+
 function TProdutoController.updateProdutos(pProduto : TJSONObject): TJSONObject;
 var
   wlProduto : TProdutoModel;
@@ -59,7 +74,7 @@ begin
     wlProduto := FProdutoDAO.updateProduto(wlProduto);
     Result := TJson.ObjectToJsonObject(wlProduto);
   finally
-    //wlProduto.Free;
+    wlProduto.Free;
   end;
 end;
 
