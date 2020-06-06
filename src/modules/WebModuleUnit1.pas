@@ -52,7 +52,7 @@ implementation
 
 {$R *.dfm}
 
-uses ServerMethodsUnit1, ServerContainerUnit1, Web.WebReq;
+uses ServerMethodsUnit1, ServerContainerUnit1, Web.WebReq, uFrmPrincipal;
 
 procedure TWebModule1.ApplicationEvents1Exception(Sender: TObject;
   E: Exception);
@@ -160,6 +160,7 @@ end;
 
 procedure TWebModule1.WebModuleCreate(Sender: TObject);
 begin
+  //DSHTTPWebDispatcher1.RESTContext := FrmPrincipal.mtSettingscontext.AsString;
   FServerFunctionInvokerAction := ActionByName('ServerFunctionInvokerAction');
   DSServerMetaDataProvider1.Server := DSServer;
   DSHTTPWebDispatcher1.Server := DSServer;

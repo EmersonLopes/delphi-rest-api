@@ -29,15 +29,20 @@ end;
 
 function TProdutoDAO.getProdutos: TObjectList<TProdutoModel>;
 var
-  wl_Qry: TFDQuery;
+  wl_Qry,
+  wl_QryImgs: TFDQuery;
   wl_Lista: TObjectList<TProdutoModel>;
   wl_Produto: TProdutoModel;
   wl_Sql: string;
+  wlImgs : TImagens;
+  wlImagem : TProdutoImagemModel;
 begin
   wl_Qry:= FConexao.getQuery;
+  wl_QryImgs := FConexao.getQuery;
   try
     wl_Sql:= 'SELECT ID_PRODUTO, DESC_PROD, VALOR, DETALHES ' +
-             '  FROM PRODUTO';
+             'FROM PRODUTO'+
+             'ORDER BY ID_PRODUTO';
 
 
     wl_Lista:= TObjectList<TProdutoModel>.Create;
@@ -61,6 +66,29 @@ begin
         wl_Produto.descProduto:= wl_Qry.FieldByName('DESC_PROD').AsString;
         wl_Produto.valor:= wl_Qry.FieldByName('VALOR').AsFloat;
         wl_Produto.detalhes:= wl_Qry.FieldByName('DETALHES').AsString;
+        wlImgs := nil;
+        wl_Sql:= 'SELECT ID_PRODUTO_IMAGEM, ID_PRODUTO, DESC_IMAGEM, IMAGEM ' +
+                 '  FROM PRODUTO_IMAGEM WHERE ID_PRODUTO = '+ IntToStr(wl_Produto.codProduto);
+        wl_QryImgs.Open(wl_Sql);
+
+        if not wl_QryImgs.IsEmpty then
+          SetLength(wlImgs, wl_QryImgs.RecordCount);
+
+        wl_QryImgs.First;
+        while not wl_QryImgs.Eof do
+        begin
+          wlImagem := TProdutoImagemModel.Create;
+          wlImagem.codProdutoImagem := wl_QryImgs.FieldByName('ID_PRODUTO_IMAGEM').AsInteger;
+          wlImagem.codProduto := wl_QryImgs.FieldByName('ID_PRODUTO').AsInteger;
+          wlImagem.descImagem := wl_QryImgs.FieldByName('DESC_IMAGEM').AsString;
+          wlImagem.imagem := wl_QryImgs.FieldByName('IMAGEM').AsString;
+          //wlImgs := TImagens.create(wlImagem);
+          //wlImgs.add(TImagens.create(wlImagem));
+          wlImgs[wl_QryImgs.RecNo-1] := wlImagem;
+          wl_QryImgs.Next;
+        end;
+        wl_Produto.imagens := wlImgs;
+
         wl_Lista.Add(wl_Produto);
         wl_Qry.Next;
       end;
@@ -68,6 +96,7 @@ begin
     Result:= wl_Lista;
   finally
     wl_Qry.Free;
+    wl_QryImgs.Free;
   end;
 
 end;

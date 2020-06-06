@@ -248,7 +248,6 @@ object FrmPrincipal: TFrmPrincipal
         Height = 429
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 97
       end
     end
   end
@@ -608,5 +607,11 @@ object FrmPrincipal: TFrmPrincipal
     OnDblClick = TrayIcon1DblClick
     Left = 444
     Top = 407
+  end
+  object TimerMemory: TTimer
+    Interval = 60000
+    OnTimer = TimerMemoryTimer
+    Left = 660
+    Top = 79
   end
 end

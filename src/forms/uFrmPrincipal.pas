@@ -57,6 +57,7 @@ type
     cbTipoConexao: TComboBox;
     mtSettingstipoConexao: TStringField;
     EdtTipoConexao: TDBEdit;
+    TimerMemory: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
@@ -68,11 +69,13 @@ type
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure cbTipoConexaoChange(Sender: TObject);
+    procedure TimerMemoryTimer(Sender: TObject);
   private
     FServer: TIdHTTPWebBrokerBridge;
     procedure StartServer;
     procedure StopServer;
     function VersaoExe(p_NomeArq: String): string;
+    procedure TrimAppMemorySize;
     { Private declarations }
   public
     { Public declarations }
@@ -229,6 +232,11 @@ begin
   FServer.Bindings.Clear;
 end;
 
+procedure TFrmPrincipal.TimerMemoryTimer(Sender: TObject);
+begin
+  TrimAppMemorySize;
+end;
+
 procedure TFrmPrincipal.TrayIcon1DblClick(Sender: TObject);
 begin
   TrayIcon1.Visible := False;
@@ -309,5 +317,20 @@ begin
       end;
     end;
 end;
+
+procedure TFrmPrincipal.TrimAppMemorySize;
+var
+  MainHandle : THandle;
+begin
+  try
+    MainHandle := OpenProcess(PROCESS_ALL_ACCESS, false, GetCurrentProcessID) ;
+    SetProcessWorkingSetSize(MainHandle, $FFFFFFFF, $FFFFFFFF) ;
+    CloseHandle(MainHandle) ;
+  except
+  end;
+  Application.ProcessMessages;
+end;
+
+
 
 end.
