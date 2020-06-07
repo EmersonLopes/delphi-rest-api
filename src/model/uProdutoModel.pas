@@ -13,13 +13,11 @@ type
     FdescImagem : String;
     Furl : String;
     Fimagem : String;
-
     procedure SetcodProduto(const Value: Integer);
     procedure SetdescImagem(const Value: String);
     procedure SetFcodProdutoImagem(const Value: Integer);
     procedure Setimagem(const Value: String);
     procedure Seturl(const Value: String);
-
     public
       //Atributos
       property codProdutoImagem: Integer read FcodProdutoImagem write SetFcodProdutoImagem;
@@ -38,6 +36,7 @@ type
     private
     FcodProduto: Integer;
     FdescProduto : String;
+    FcodCategoria: Integer;
     Fvalor : Double;
     Fdetalhes : String;
     Fimagens : TImagens;
@@ -46,11 +45,13 @@ type
     procedure Setvalor(const Value: Double);
     procedure Setdetalhes(const Value: String);
     procedure Setimagens(const Value: TImagens);
+    procedure SetcodCategoria(const Value: Integer);
 
     public
       //Atributos
       property codProduto: Integer read FcodProduto write SetcodProduto;
       property descProduto: String read FdescProduto write SetdescProduto;
+      property codCategoria: Integer read FcodCategoria write SetcodCategoria;
       property valor: Double read Fvalor write Setvalor;
       property detalhes: String read Fdetalhes write Setdetalhes;
       property imagens: TImagens read Fimagens write Setimagens;
@@ -62,6 +63,11 @@ implementation
 { TProdutoModel }
 
 uses uProdutoDAO, uJSONUtil;
+
+procedure TProdutoModel.SetcodCategoria(const Value: Integer);
+begin
+  FcodCategoria := Value;
+end;
 
 procedure TProdutoModel.SetcodProduto(const Value: Integer);
 begin

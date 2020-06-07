@@ -16,7 +16,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     function GetCategorias : TJSONArray;
-    function updateCategorias(pCategoria : TJSONObject) : TJSONObject;
+    function updateCategoria(pCategoria : TJSONObject) : TJSONObject;
 
   end;
 {$METHODINFO OFF}
@@ -45,7 +45,7 @@ begin
   Result := FCategoriaController.getCategorias;
 end;
 
-function TServiceCategoria.updateCategorias(pCategoria : TJSONObject): TJSONObject;
+function TServiceCategoria.updateCategoria(pCategoria : TJSONObject): TJSONObject;
 begin
   result := FCategoriaController.updateCategorias(pCategoria);
 end;

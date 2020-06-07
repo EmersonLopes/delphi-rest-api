@@ -64,6 +64,7 @@ procedure TWebModule1.DSAuthenticationManager1UserAuthenticate(Sender: TObject;
   const Protocol, Context, User, Password: string; var valid: Boolean;
   UserRoles: TStrings);
 begin
+  {TESTE
   if (User = 'administrador') and (Password = '789') then
     valid:= True
   else
@@ -71,6 +72,7 @@ begin
     valid:= False;
     addError('Authenticate error. User: '+ User + ', Password: '+Password);
   end;
+  }
 end;
 
 procedure TWebModule1.DSHTTPWebDispatcher1FormatResult(Sender: TObject;
