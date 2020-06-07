@@ -27,7 +27,11 @@ uses
   uProdutoController in 'src\controllers\uProdutoController.pas',
   uProdutoModel in 'src\model\uProdutoModel.pas',
   uProdutoDAO in 'src\dao\uProdutoDAO.pas',
-  uDmConexao in 'src\modules\uDmConexao.pas' {DmConexao: TDataModule};
+  uDmConexao in 'src\modules\uDmConexao.pas' {DmConexao: TDataModule},
+  uCategoriaModel in 'src\model\uCategoriaModel.pas',
+  uServiceCategoria in 'src\services\uServiceCategoria.pas',
+  uCategoriaController in 'src\controllers\uCategoriaController.pas',
+  uCategoriaDAO in 'src\dao\uCategoriaDAO.pas';
 
 {$R *.res}
 

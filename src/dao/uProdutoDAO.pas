@@ -41,7 +41,7 @@ begin
   wl_QryImgs := FConexao.getQuery;
   try
     wl_Sql:= 'SELECT ID_PRODUTO, DESC_PROD, VALOR, DETALHES ' +
-             'FROM PRODUTO'+
+             'FROM PRODUTO '+
              'ORDER BY ID_PRODUTO';
 
 
@@ -67,7 +67,7 @@ begin
         wl_Produto.valor:= wl_Qry.FieldByName('VALOR').AsFloat;
         wl_Produto.detalhes:= wl_Qry.FieldByName('DETALHES').AsString;
         wlImgs := nil;
-        wl_Sql:= 'SELECT ID_PRODUTO_IMAGEM, ID_PRODUTO, DESC_IMAGEM, IMAGEM ' +
+        wl_Sql:= 'SELECT ID_PRODUTO_IMAGEM, ID_PRODUTO, DESC_IMAGEM, IMAGEM, URL ' +
                  '  FROM PRODUTO_IMAGEM WHERE ID_PRODUTO = '+ IntToStr(wl_Produto.codProduto);
         wl_QryImgs.Open(wl_Sql);
 
@@ -82,6 +82,7 @@ begin
           wlImagem.codProduto := wl_QryImgs.FieldByName('ID_PRODUTO').AsInteger;
           wlImagem.descImagem := wl_QryImgs.FieldByName('DESC_IMAGEM').AsString;
           wlImagem.imagem := wl_QryImgs.FieldByName('IMAGEM').AsString;
+          wlImagem.url := wl_QryImgs.FieldByName('URL').AsString;
           //wlImgs := TImagens.create(wlImagem);
           //wlImgs.add(TImagens.create(wlImagem));
           wlImgs[wl_QryImgs.RecNo-1] := wlImagem;

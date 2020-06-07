@@ -71,7 +71,6 @@ begin
     valid:= False;
     addError('Authenticate error. User: '+ User + ', Password: '+Password);
   end;
-
 end;
 
 procedure TWebModule1.DSHTTPWebDispatcher1FormatResult(Sender: TObject;

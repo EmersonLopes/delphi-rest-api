@@ -139,6 +139,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="src\model\uCategoriaModel.pas"/>
+        <DCCReference Include="src\services\uServiceCategoria.pas"/>
+        <DCCReference Include="src\controllers\uCategoriaController.pas"/>
+        <DCCReference Include="src\dao\uCategoriaDAO.pas"/>
         <None Include="js\base64.js"/>
         <None Include="js\serverfunctionexecutor.js"/>
         <None Include="js\json2.js"/>
