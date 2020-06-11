@@ -15,7 +15,8 @@ type
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function GetProdutos : TJSONArray;
+    function GetMaisVendidos : TJSONArray;
+    function GetProdutos(pCodCategoria : Integer)  : TJSONArray;
     function updateProdutos(pProduto : TJSONObject) : TJSONObject;
     function updateImagem(pImagem : TJSONObject) : TJSONObject;
 
@@ -42,7 +43,12 @@ begin
   inherited;
 end;
 
-function TServiceProduto.GetProdutos: TJSONArray;
+function TServiceProduto.GetProdutos(pCodCategoria: Integer): TJSONArray;
+begin
+  Result := FProdutoController.getProdutos(pCodCategoria);
+end;
+
+function TServiceProduto.GetMaisVendidos: TJSONArray;
 begin
   Result := FProdutoController.getProdutos;
 end;

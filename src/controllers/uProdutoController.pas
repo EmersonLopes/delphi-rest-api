@@ -13,7 +13,8 @@ type
       constructor Create(pOwner: TComponent); override;
       destructor Destroy; override;
 
-      function getProdutos : TJSONArray;
+      function getProdutos : TJSONArray;overload;
+      function getProdutos(pCodCategoria : Integer) : TJSONArray;overload;
       function updateProdutos(pProduto : TJSONObject): TJSONObject;
       function updateImagem(pImagem : TJSONObject): TJSONObject;
 
@@ -36,6 +37,18 @@ destructor TProdutoController.Destroy;
 begin
   FreeAndNil(FProdutoDAO);
   inherited;
+end;
+
+function TProdutoController.getProdutos(pCodCategoria: Integer): TJSONArray;
+var
+  wl_Lista: TObjectList<TProdutoModel>;
+begin
+  try
+    wl_Lista:= FProdutoDAO.getProdutos(pCodCategoria);
+    Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
+  finally
+    //wl_Lista.Free;
+  end;
 end;
 
 function TProdutoController.getProdutos: TJSONArray;
