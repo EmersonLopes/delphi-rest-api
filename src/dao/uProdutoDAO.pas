@@ -334,19 +334,19 @@ begin
       end;
 
       wl_Produto := getUltimoProduto;
-      for I := 0 to Length(wl_Produto.imagens) - 1 do
+      for I := 0 to Length(pProduto.imagens) - 1 do
       begin
-        wl_Sql:= 'INSERT INTO PRODUTO (DESC_PROD, ID_CATEGORIA, VALOR, DETALHES) ' +
-                 'VALUES(:DESC_PROD, :ID_CATEGORIA, :VALOR, :DETALHES)';
+        wl_Sql:= 'INSERT INTO PRODUTO_IMAGEM (ID_PRODUTO, IMAGEM, URL, DESC_IMAGEM) ' +
+                 'VALUES(:ID_PRODUTO, :IMAGEM, :URL, :DESC_IMAGEM)';
 
 
         wlI := wl_Qry.ExecSQL(
         wl_Sql,[
 
-        pProduto.descProduto,
-        pProduto.codCategoria,
-        pProduto.valor,
-        pProduto.detalhes ]
+        wl_Produto.codProduto,
+        pProduto.imagens[i].imagem,
+        pProduto.imagens[i].url,
+        pProduto.imagens[i].descImagem ]
         );
       end;
 
