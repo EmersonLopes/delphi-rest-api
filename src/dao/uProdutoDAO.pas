@@ -51,6 +51,7 @@ begin
     wl_Qry.Open;
     if wl_Qry.IsEmpty then
     begin
+      {
       wl_Produto:= TProdutoModel.Create;
       wl_Produto.codProduto:= 0;
       wl_Produto.descProduto:= '';
@@ -58,6 +59,7 @@ begin
       wl_Produto.detalhes := '';
       wl_Produto.codCategoria:= 0;
       wl_Lista.Add(wl_Produto);
+      }
     end
       else
     begin
@@ -166,6 +168,7 @@ begin
     wl_Qry.Open;
     if wl_Qry.IsEmpty then
     begin
+      {
       wl_Produto:= TProdutoModel.Create;
       wl_Produto.codProduto:= 0;
       wl_Produto.descProduto:= '';
@@ -173,6 +176,7 @@ begin
       wl_Produto.detalhes := '';
       wl_Produto.codCategoria:= 0;
       wl_Lista.Add(wl_Produto);
+      }
     end
       else
     begin
@@ -301,12 +305,14 @@ end;
 function TProdutoDAO.updateProduto(pProduto : TProdutoModel): TProdutoModel;
 var
   wl_Qry: TFDQuery;
-  wlI : Integer;
+  wlI,
+  I : Integer;
   wl_Produto: TProdutoModel;
   wl_Sql: string;
 begin
   wl_Qry:= FConexao.getQuery;
   try
+    FConexao.iniTrans;
     try
       wl_Sql:= 'INSERT INTO PRODUTO (DESC_PROD, ID_CATEGORIA, VALOR, DETALHES) ' +
                'VALUES(:DESC_PROD, :ID_CATEGORIA, :VALOR, :DETALHES)';
@@ -321,12 +327,37 @@ begin
       pProduto.detalhes ]
       );
 
-      if wlI > 0 then
-        Result:= getUltimoProduto
-      else
-        raise Exception.Create('Nothin inserted.');
+      if wlI <= 0 then
+      begin
+        FConexao.desfazTrans;
+        raise Exception.Create('Nothing inserted.');
+      end;
+
+      wl_Produto := getUltimoProduto;
+      for I := 0 to Length(wl_Produto.imagens) - 1 do
+      begin
+        wl_Sql:= 'INSERT INTO PRODUTO (DESC_PROD, ID_CATEGORIA, VALOR, DETALHES) ' +
+                 'VALUES(:DESC_PROD, :ID_CATEGORIA, :VALOR, :DETALHES)';
+
+
+        wlI := wl_Qry.ExecSQL(
+        wl_Sql,[
+
+        pProduto.descProduto,
+        pProduto.codCategoria,
+        pProduto.valor,
+        pProduto.detalhes ]
+        );
+      end;
+
+
+      Result:= wl_Produto;
+
+
+      FConexao.gravaTrans;
     except on E: Exception do
       begin
+        FConexao.desfazTrans;
         pProduto.codProduto:= 0;
         pProduto.descProduto:= '';
         pProduto.codCategoria:= 0;
