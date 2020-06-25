@@ -13,11 +13,13 @@ type
     FdescImagem : String;
     Furl : String;
     Fimagem : String;
+    FpercDesconto : Double;
     procedure SetcodProduto(const Value: Integer);
     procedure SetdescImagem(const Value: String);
     procedure SetFcodProdutoImagem(const Value: Integer);
     procedure Setimagem(const Value: String);
     procedure Seturl(const Value: String);
+    procedure SetpercDesconto(const Value: Double);
     public
       //Atributos
       property codProdutoImagem: Integer read FcodProdutoImagem write SetFcodProdutoImagem;
@@ -25,6 +27,7 @@ type
       property imagem: String read Fimagem write Setimagem;
       property descImagem: String read FdescImagem write SetdescImagem;
       property url: String read Furl write Seturl;
+      property percDesconto: Double read FpercDesconto write SetpercDesconto;
 
   end;
 
@@ -116,6 +119,11 @@ end;
 procedure TProdutoImagemModel.Setimagem(const Value: String);
 begin
   Fimagem := Value;
+end;
+
+procedure TProdutoImagemModel.SetpercDesconto(const Value: Double);
+begin
+  FpercDesconto := Value;
 end;
 
 procedure TProdutoImagemModel.Seturl(const Value: String);

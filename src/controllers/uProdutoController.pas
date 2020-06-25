@@ -9,12 +9,15 @@ type
   TProdutoController = class(TComponent)
     private
       FProdutoDAO: TProdutoDAO;
+
     public
       constructor Create(pOwner: TComponent); override;
       destructor Destroy; override;
 
       function getProdutos : TJSONArray;overload;
       function getProdutos(pCodCategoria : Integer) : TJSONArray;overload;
+      function getMaisVendidos: TJSONArray;
+      function getPromocoes: TJSONArray;
       function updateProdutos(pProduto : TJSONObject): TJSONObject;
       function updateImagem(pImagem : TJSONObject): TJSONObject;
 
@@ -57,6 +60,30 @@ var
 begin
   try
     wl_Lista:= FProdutoDAO.getProdutos;
+    Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
+  finally
+    //wl_Lista.Free;
+  end;
+end;
+
+function TProdutoController.getMaisVendidos: TJSONArray;
+var
+  wl_Lista: TObjectList<TProdutoModel>;
+begin
+  try
+    wl_Lista:= FProdutoDAO.getMaisVendidos;
+    Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
+  finally
+    //wl_Lista.Free;
+  end;
+end;
+
+function TProdutoController.getPromocoes: TJSONArray;
+var
+  wl_Lista: TObjectList<TProdutoModel>;
+begin
+  try
+    wl_Lista:= FProdutoDAO.getPromocoes;
     Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
   finally
     //wl_Lista.Free;

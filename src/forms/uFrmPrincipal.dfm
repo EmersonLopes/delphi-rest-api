@@ -85,7 +85,7 @@ object FrmPrincipal: TFrmPrincipal
     Top = 39
     Width = 733
     Height = 457
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     object TabSheet3: TTabSheet
@@ -241,6 +241,10 @@ object FrmPrincipal: TFrmPrincipal
     object TabSheet2: TTabSheet
       Caption = 'Log'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object memoLog: TMemo
         Left = 0
         Top = 0
