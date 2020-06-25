@@ -13,13 +13,11 @@ type
     FdescImagem : String;
     Furl : String;
     Fimagem : String;
-    FpercDesconto : Double;
     procedure SetcodProduto(const Value: Integer);
     procedure SetdescImagem(const Value: String);
     procedure SetFcodProdutoImagem(const Value: Integer);
     procedure Setimagem(const Value: String);
     procedure Seturl(const Value: String);
-    procedure SetpercDesconto(const Value: Double);
     public
       //Atributos
       property codProdutoImagem: Integer read FcodProdutoImagem write SetFcodProdutoImagem;
@@ -27,7 +25,6 @@ type
       property imagem: String read Fimagem write Setimagem;
       property descImagem: String read FdescImagem write SetdescImagem;
       property url: String read Furl write Seturl;
-      property percDesconto: Double read FpercDesconto write SetpercDesconto;
 
   end;
 
@@ -42,6 +39,7 @@ type
     FcodCategoria: Integer;
     Fvalor : Double;
     Fdetalhes : String;
+    FpercDesconto : Double;
     Fimagens : TImagens;
     procedure SetcodProduto(const Value: Integer);
     procedure SetdescProduto(const Value: String);
@@ -49,6 +47,7 @@ type
     procedure Setdetalhes(const Value: String);
     procedure Setimagens(const Value: TImagens);
     procedure SetcodCategoria(const Value: Integer);
+    procedure SetpercDesconto(const Value: Double);
 
     public
       //Atributos
@@ -58,6 +57,7 @@ type
       property valor: Double read Fvalor write Setvalor;
       property detalhes: String read Fdetalhes write Setdetalhes;
       property imagens: TImagens read Fimagens write Setimagens;
+      property percDesconto: Double read FpercDesconto write SetpercDesconto;
   end;
 
 
@@ -94,6 +94,11 @@ begin
   Fimagens := Value;
 end;
 
+procedure TProdutoModel.SetpercDesconto(const Value: Double);
+begin
+  FpercDesconto := Value;
+end;
+
 procedure TProdutoModel.Setvalor(const Value: Double);
 begin
   Fvalor := Value;
@@ -119,11 +124,6 @@ end;
 procedure TProdutoImagemModel.Setimagem(const Value: String);
 begin
   Fimagem := Value;
-end;
-
-procedure TProdutoImagemModel.SetpercDesconto(const Value: Double);
-begin
-  FpercDesconto := Value;
 end;
 
 procedure TProdutoImagemModel.Seturl(const Value: String);
