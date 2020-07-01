@@ -14,6 +14,7 @@ type
     public
       constructor Create;
       function getProdutos : TObjectList<TProdutoModel>; overload;
+      function getProdutos(pDesc : string) : TObjectList<TProdutoModel>; overload;
       function getProdutos(pCodCategoria : Integer) : TObjectList<TProdutoModel>;overload;
       function getMaisVendidos : TObjectList<TProdutoModel>;
       function getPromocoes : TObjectList<TProdutoModel>;
@@ -241,6 +242,85 @@ begin
              'FROM PRODUTO '+
              'WHERE ID_CATEGORIA = '+IntToStr(pCodCategoria)+
              ' ORDER BY ID_PRODUTO';
+
+
+    wl_Lista:= TObjectList<TProdutoModel>.Create;
+    wl_Qry.SQL.Text := wl_Sql;
+    wl_Qry.Open;
+    if wl_Qry.IsEmpty then
+    begin
+      {
+      wl_Produto:= TProdutoModel.Create;
+      wl_Produto.codProduto:= 0;
+      wl_Produto.descProduto:= '';
+      wl_Produto.valor:= 0;
+      wl_Produto.detalhes := '';
+      wl_Produto.codCategoria:= 0;
+      wl_Lista.Add(wl_Produto);
+      }
+    end
+      else
+    begin
+      wl_Qry.First;
+      while not wl_qry.Eof do
+      begin
+        wl_Produto:= TProdutoModel.Create;
+        wl_Produto.codProduto:= wl_Qry.FieldByName('ID_PRODUTO').AsInteger;
+        wl_Produto.descProduto:= wl_Qry.FieldByName('DESC_PROD').AsString;
+        wl_Produto.valor:= wl_Qry.FieldByName('VALOR').AsFloat;
+        wl_Produto.detalhes:= wl_Qry.FieldByName('DETALHES').AsString;
+        wl_Produto.codCategoria:= wl_Qry.FieldByName('ID_CATEGORIA').AsInteger;
+        wlImgs := nil;
+        wl_Sql:= 'SELECT ID_PRODUTO_IMAGEM, ID_PRODUTO, DESC_IMAGEM, IMAGEM, URL ' +
+                 '  FROM PRODUTO_IMAGEM WHERE ID_PRODUTO = '+ IntToStr(wl_Produto.codProduto);
+        wl_QryImgs.SQL.Text := wl_Sql;
+        wl_QryImgs.Open;
+
+        if not wl_QryImgs.IsEmpty then
+          SetLength(wlImgs, wl_QryImgs.RecordCount);
+
+        wl_QryImgs.First;
+        while not wl_QryImgs.Eof do
+        begin
+          wlImagem := TProdutoImagemModel.Create;
+          wlImagem.codProdutoImagem := wl_QryImgs.FieldByName('ID_PRODUTO_IMAGEM').AsInteger;
+          wlImagem.codProduto := wl_QryImgs.FieldByName('ID_PRODUTO').AsInteger;
+          wlImagem.descImagem := wl_QryImgs.FieldByName('DESC_IMAGEM').AsString;
+          wlImagem.imagem := wl_QryImgs.FieldByName('IMAGEM').AsString;
+          wlImagem.url := wl_QryImgs.FieldByName('URL').AsString;
+          wlImgs[wl_QryImgs.RecNo-1] := wlImagem;
+          wl_QryImgs.Next;
+        end;
+        wl_Produto.imagens := wlImgs;
+
+        wl_Lista.Add(wl_Produto);
+        wl_Qry.Next;
+      end;
+    end;
+    Result:= wl_Lista;
+  finally
+    wl_Qry.Free;
+    wl_QryImgs.Free;
+  end;
+end;
+
+function TProdutoDAO.getProdutos(pDesc: string): TObjectList<TProdutoModel>;
+var
+  wl_Qry,
+  wl_QryImgs: TFDQuery;
+  wl_Lista: TObjectList<TProdutoModel>;
+  wl_Produto: TProdutoModel;
+  wl_Sql: string;
+  wlImgs : TImagens;
+  wlImagem : TProdutoImagemModel;
+begin
+  wl_Qry:= FConexao.getQuery;
+  wl_QryImgs := FConexao.getQuery;
+  try
+    wl_Sql:= 'SELECT ID_PRODUTO, DESC_PROD, VALOR, DETALHES, ID_CATEGORIA, PERC_DESCONTO ' +
+             'FROM PRODUTO '+
+             'WHERE UPPER(DESC_PROD) LIKE ' + QuotedStr('%'+UpperCase(pDesc)+'%')+
+             'ORDER BY ID_PRODUTO';
 
 
     wl_Lista:= TObjectList<TProdutoModel>.Create;

@@ -15,6 +15,7 @@ type
       destructor Destroy; override;
 
       function getProdutos : TJSONArray;overload;
+      function getProdutos(pDesc : string) : TJSONArray;overload;
       function getProdutos(pCodCategoria : Integer) : TJSONArray;overload;
       function getMaisVendidos: TJSONArray;
       function getPromocoes: TJSONArray;
@@ -73,6 +74,26 @@ begin
   try
     wl_Lista:= FProdutoDAO.getMaisVendidos;
     Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
+  finally
+    //wl_Lista.Free;
+  end;
+end;
+
+function TProdutoController.getProdutos(pDesc: string): TJSONArray;
+var
+  wl_Lista: TObjectList<TProdutoModel>;
+begin
+  try
+    if(pDesc.Length <3)then
+    begin
+      Result := TJSONArray.Create;
+      Result.AddElement(TJsonObject.Create(TJSONPair.Create('msg',TJSONString.Create('campo de pesquisa deve ser maior que 3 caracters.'))));
+    end
+    else
+    begin
+      wl_Lista:= FProdutoDAO.getProdutos(pDesc);
+      Result := TJSONUtil.ObjetoListaParaJson<TProdutoModel>(wl_Lista);
+    end;
   finally
     //wl_Lista.Free;
   end;

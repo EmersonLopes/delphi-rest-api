@@ -17,6 +17,7 @@ type
     destructor Destroy; override;
     function GetMaisVendidos : TJSONArray;
     function GetProdutos(pCodCategoria : Integer)  : TJSONArray;
+    function GetProdutosDescricao(pDesc : string)  : TJSONArray;
     function GetPromocoes : TJSONArray;
     function updateProdutos(pProduto : TJSONObject) : TJSONObject;
     function updateImagem(pImagem : TJSONObject) : TJSONObject;
@@ -47,6 +48,11 @@ end;
 function TServiceProduto.GetProdutos(pCodCategoria: Integer): TJSONArray;
 begin
   Result := FProdutoController.getProdutos(pCodCategoria);
+end;
+
+function TServiceProduto.GetProdutosDescricao(pDesc: string): TJSONArray;
+begin
+  Result := FProdutoController.getProdutos(pDesc);
 end;
 
 function TServiceProduto.GetPromocoes: TJSONArray;
